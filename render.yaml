@@ -1,7 +1,37 @@
 services:
+  # Backend API Service
   - type: web
     name: qms-backend
     env: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: qms-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+
+  # Frontend Service
   - type: web
     name: qms-frontend
     env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npx serve -s build -l $PORT
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          name: qms-backend
+          type: web
+          property: url
+
+databases:
+  - name: qms-db
+    databaseName: qmsdb
+    user: qms
+    plan: free 
