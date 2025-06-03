@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: qms-backend
+    env: python
+  - type: web
+    name: qms-frontend
+    env: node
