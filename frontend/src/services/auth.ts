@@ -1,7 +1,6 @@
 import axios from 'axios';
 import create from 'zustand';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+import { config } from '../utils/config';
 
 interface AuthState {
   token: string | null;
@@ -17,7 +16,7 @@ export const useAuth = create<AuthState>((set, get) => ({
 
   login: async (username: string, password: string) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
+      const response = await axios.post(`${config.apiUrl}/api/auth/login`, {
         username,
         password,
       });

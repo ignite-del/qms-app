@@ -28,7 +28,12 @@ services:
         fromService:
           name: qms-backend
           type: web
-          property: url
+          property: host
+      - key: REACT_APP_API_PORT
+        fromService:
+          name: qms-backend
+          type: web
+          property: port
 
 databases:
   - name: qms-db
